@@ -2,9 +2,9 @@ package config
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 
-	"github.com/pkg/errors"
 	"github.com/prometheus/common/model"
 	"gopkg.in/yaml.v2"
 )
@@ -65,15 +65,15 @@ func LoadFromFiles(filenames []string) (*Config, error) {
 	for _, f := range filenames {
 		content, err := os.ReadFile(f)
 		if err != nil {
-			return nil, errors.Wrapf(err, "reading config file %s", f)
+			return nil, fmt.Errorf("error reading config file %s: %w", f, err)
 		}
 		if _, err := buf.Write(content); err != nil {
-			return nil, errors.Wrapf(err, "appending config file %s to buffer", f)
+			return nil, fmt.Errorf("error appending config file %s to buffer: %w", f, err)
 		}
 	}
 	cfg, err := Load(buf.Bytes())
 	if err != nil {
-		return nil, errors.Wrapf(err, "parsing YAML files %s", filenames)
+		return nil, fmt.Errorf("error parsing YAML files %s: %w", filenames, err)
 	}
 	return cfg, nil
 }
