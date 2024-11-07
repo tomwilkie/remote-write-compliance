@@ -1,12 +1,12 @@
 package output
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"os"
 	"path"
 
-	"github.com/pkg/errors"
 	"github.com/prometheus/compliance/promql/comparer"
 	"github.com/prometheus/compliance/promql/config"
 )
@@ -45,7 +45,7 @@ var funcMap = map[string]interface{}{
 func HTML(tplFile string) (Outputter, error) {
 	t, err := template.New(path.Base(tplFile)).Funcs(funcMap).ParseFiles(tplFile)
 	if err != nil {
-		return nil, errors.Wrapf(err, "parsing template file %q", tplFile)
+		return nil, fmt.Errorf("error parsing template file %q: %w", tplFile, err)
 	}
 
 	return func(results []*comparer.Result, includePassing bool, tweaks []*config.QueryTweak) {

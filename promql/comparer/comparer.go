@@ -9,7 +9,6 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/pkg/errors"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
 	"github.com/prometheus/compliance/promql/config"
@@ -91,7 +90,7 @@ func (c *Comparer) Compare(tc *TestCase) (*Result, error) {
 
 	if (refErr != nil) != tc.ShouldFail {
 		if refErr != nil {
-			return nil, errors.Wrapf(refErr, "querying reference API for %q", tc.Query)
+			return nil, fmt.Errorf("error querying reference API for %q: %w", tc.Query, refErr)
 		}
 		return nil, fmt.Errorf("expected reference API query %q to fail, but succeeded", tc.Query)
 	}
