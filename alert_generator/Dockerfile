@@ -1,4 +1,4 @@
-FROM golang:1.18 as build-env
+FROM golang:1.23 as build-env
 
 WORKDIR /go/src/alert_generator
 COPY . /go/src/alert_generator
