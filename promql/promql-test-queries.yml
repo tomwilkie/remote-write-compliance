@@ -52,6 +52,7 @@ test_cases:
   - query: 'demo_memory_usage_bytes{instance!~".*:10000"}'
   - query: 'demo_memory_usage_bytes{type="free", instance!="demo.promlabs.com:10000"}'
   - query: '{type="free", instance!="demo.promlabs.com:10000"}'
+  - query: 'promhttp_metric_handler_requests_in_flight and ignoring(code) promhttp_metric_handler_requests_total'
   - query: '{__name__=~".*"}'
     should_fail: true
   - query: "nonexistent_metric_name"
