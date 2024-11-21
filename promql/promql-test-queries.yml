@@ -45,13 +45,22 @@ test_cases:
   # TODO: Add tests for staleness support.
   - query: 'demo_memory_usage_bytes'
   - query: '{__name__="demo_memory_usage_bytes"}'
+  # Check for spacing.
+  - query: ' { __name__ = "demo_memory_usage_bytes" } '
   - query: 'demo_memory_usage_bytes{type="free"}'
+  - query: 'demo_memory_usage_bytes{type=`free`}'
+  - query: "demo_memory_usage_bytes{type='free'}"
   - query: 'demo_memory_usage_bytes{type!="free"}'
   - query: 'demo_memory_usage_bytes{instance=~"demo.promlabs.com:.*"}'
+  # Check for anchored regexes.
+  - query: 'demo_memory_usage_bytes{instance=~"demo.promlabs.com"}'
   - query: 'demo_memory_usage_bytes{instance=~"host"}'
   - query: 'demo_memory_usage_bytes{instance!~".*:10000"}'
   - query: 'demo_memory_usage_bytes{type="free", instance!="demo.promlabs.com:10000"}'
   - query: '{type="free", instance!="demo.promlabs.com:10000"}'
+  # Check for using the same label name in different matchers.
+  - query: '{__name__=~"go_gc_heap_allocs.*",__name__=~".*_sum"}'
+  - query: '{type="free",type!="free"}'
   - query: '{__name__=~".*"}'
     should_fail: true
   - query: "nonexistent_metric_name"
